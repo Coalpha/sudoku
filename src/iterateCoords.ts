@@ -1,11 +1,11 @@
-import getBlock from './getBlock';
+import getBlockIndex from './getBlockIndex';
 import parseCellGroup from './parseCellGroup';
 import { CellGroup, Coordinate, PossiVals, PossibleValues, Sudoku } from './types';
 
 export default ((s: Sudoku, group: string) : PossibleValues => {
   const cg = parseCellGroup(s, group);
   const collectionOfPossiVals = cg.coords.map((coord: Coordinate) : PossiVals => {
-    const currentBlock = getBlock(s, coord);
+    const currentBlock = s.blocks[getBlockIndex(s, coord)];
     const currentRow = s.rows[coord[1]];
     const currentCol = s.cols[coord[0]];
     const currentSet = new Set([...currentBlock.values, ...currentRow.values, ...currentCol.values]);
