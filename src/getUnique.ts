@@ -9,7 +9,7 @@ interface Option {
 
 const option = (coord: Coordinate, num: number) : Option => ({ coord, num });
 
-const dedupeOptionsByNum = (options: Array<Option>) => {
+const dedupeOptionsByNum = (options: Array<Option>) : Array<Option> => {
   const seen: Map<number, number> = new Map(); // num to num
   options.forEach(option => {
     const { num } = option;
@@ -23,7 +23,7 @@ const dedupeOptionsByNum = (options: Array<Option>) => {
   return options.filter(option => seen.get(option.num) === 1);
 };
 
-const dedupeOptionsByCoord = options => {
+const dedupeOptionsByCoord = (options: Array<Option>) : Array<Option> => {
   const seen = new Map(); // [num, num] to num
   options.forEach(option => {
     const { coord } = option;
@@ -37,8 +37,8 @@ const dedupeOptionsByCoord = options => {
   return options.filter(option => seen.get(option.coord) === 1);
 };
 
-const place = (s: Sudoku) => (option: Option) => {
-  const [x, y] = option.coord;;
+const place = (s: Sudoku) => (option: Option) : Changes => {
+  const [x, y] = option.coord;
   const blockNum = getBlockIndex(s, option.coord);
   const currentBlock = s.blocks[blockNum];
   const currentCol = s.cols[x];
