@@ -1,1 +1,2 @@
-export { Matrix } from './structs';
+import Sudoku from './structs';
+console.log(new Sudoku(3));
