@@ -37,10 +37,14 @@ export class Sudoku {
   matrix: Matrix;
   allPossibleValues: Array<number>;
 
-  constructor(blockSize = 3, matrix: Matrix) {
-    this.blockSize = matrix.length;
-    this.maxValue = blockSize ** 2;
-    this.totalSize = blockSize ** 3;
+  constructor(matrix: Matrix) {
+    const blockSize = Math.sqrt(matrix.length);
+    if (blockSize < 1 || !Number.isInteger(blockSize)) {
+      throw Error('The square root of the matrix length must be an integer larger than 0');
+    }
+    this.blockSize = blockSize;
+    this.maxValue = this.blockSize ** 2;
+    this.totalSize = this.blockSize ** 3;
     this.changes = [];
     const aryMaxVal = Array(this.maxValue).fill(0);
     this.allPossibleValues
@@ -63,7 +67,7 @@ export class Sudoku {
       const col = aryMaxVal.map((_, y) => [x, y]);
       return new CellGroup(id, col);
     });
-    this.matrix = matrix || MatrixFactory(this.totalSize);
+    this.matrix = matrix;
     this.allPossibleValues = aryMaxVal.map((v, i) => i);
   }
 }

@@ -7,7 +7,7 @@ import typescript from 'rollup-plugin-typescript';
 
 function makeOutput(format, outfile, plugins) {
   return ({
-    input: 'src/main.js',
+    input: 'src/main.ts',
     moduleName: 'Sudoku',
     output: {
       format,
