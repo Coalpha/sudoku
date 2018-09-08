@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "pretty": true,
+    "moduleResolution": "Node",
+    "lib": [
+      "es5",
+      "es6",
+      "es7",
+      "dom",
+      "ScriptHost"
+    ],
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "target": "es6"
+}

@@ -1,20 +1,21 @@
-import livereload from 'rollup-plugin-livereload';
-import resolve from 'rollup-plugin-node-resolve';
-import serve from 'rollup-plugin-serve';
 import babel from 'rollup-plugin-babel';
+import livereload from 'rollup-plugin-livereload';
+// import resolve from 'rollup-plugin-node-resolve';
+import serve from 'rollup-plugin-serve';
 import { terser } from 'rollup-plugin-terser';
+import typescript from 'rollup-plugin-typescript';
 
 function makeOutput(format, outfile, ...plugins) {
   return ({
-    input: 'src/main.js',
-    moduleName: 'Hangul',
+    input: 'src/main.ts',
+    moduleName: 'Sudoku',
     output: {
       format,
       file: outfile,
       name: 'Sudoku',
       strict: true,
     },
-    plugins: [resolve(), babel(), ...plugins],
+    plugins: [typescript(), babel(), ...plugins],
   });
 }
 const production = !process.env.ROLLUP_WATCH;
