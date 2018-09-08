@@ -5,14 +5,14 @@ import serve from 'rollup-plugin-serve';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript';
 
-function makeOutput(format, outfile, ...plugins) {
+function makeOutput(format, outfile, plugins) {
   return ({
-    input: 'src/main.ts',
-    moduleName: 'Sudoku',
+    input: 'src/main.js',
+    moduleName: 'Sudoku', // yep, that's painful
     output: {
       format,
       file: outfile,
-      name: 'Sudoku',
+      name: 'window',
       strict: true,
     },
     plugins: [typescript(), babel(), ...plugins],
@@ -23,15 +23,18 @@ export default ((() => {
   if (production) {
     process.env.BABEL_ENV = 'production';
     return [
-      makeOutput('iife', 'static/bundle.min.js', terser()),
+      makeOutput('iife', 'bundle.min.js', [terser()]),
     ];
   }
-  const o = makeOutput('iife', 'static/bundle.min.js', [
+  const o = makeOutput('iife', 'bundle.min.js', [
     serve({
-      contentBase: 'static',
+      contentBase: '.',
       port: 8080,
     }),
-    livereload('static'),
+    livereload({
+      watch: '.',
+      verbose: true,
+    }),
   ]);
   o.output.sourcemap = true;
   o.watch = {
