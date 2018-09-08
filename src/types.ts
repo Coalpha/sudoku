@@ -1,16 +1,13 @@
 type CellGroupType = 'block'
   | 'row'
   | 'col';
-type Matrix = Array<Array<number|void>>;
+type Matrix = Array<Array<number>>; // 0 = not filled in
 export type PossiVals = Array<number>; // the possible values for one cell
 export type Changes = Array<string>;
 // export interface Coordinate {
 //   [index: number]: number;
 // }
 export type Coordinate = Array<number>;
-export interface ArrayFunction<T> {
-  (ary: Array<any>): Array<T>;
-}
 export interface PossibleValues { // the possible values for an entire CellGroup
   group: string;
   values: Array<PossiVals>;
@@ -37,7 +34,7 @@ export class Sudoku {
   rows: Array<CellGroup>;
   cols: Array<CellGroup>;
   changes: Changes;
-  matrix: Array<Array<number>> | void;
+  matrix: Matrix;
   allPossibleValues: Array<number>;
 
   constructor(blockSize = 3, matrix: Matrix) {
