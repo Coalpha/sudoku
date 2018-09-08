@@ -4,9 +4,10 @@ type CellGroupType = 'block'
 type Matrix = Array<Array<number|void>>;
 export type PossiVals = Array<number>; // the possible values for one cell
 export type Changes = Array<string>;
-export interface Coordinate {
-  [index: number]: number;
-}
+// export interface Coordinate {
+//   [index: number]: number;
+// }
+export type Coordinate = Array<number>;
 export interface ArrayFunction<T> {
   (ary: Array<any>): Array<T>;
 }
@@ -14,7 +15,6 @@ export interface PossibleValues { // the possible values for an entire CellGroup
   group: string;
   values: Array<PossiVals>;
 }
-export type PossibleValuesCollection = Array<PossibleValues>;
 export const makeCellGroupId = (type: CellGroupType, index: number) : string => `${type}:${index}`;
 export const MatrixFactory = (size: number) : Matrix => Array(size).fill(0).map(() => Array(size).fill(null));
 export class CellGroup {
@@ -37,7 +37,7 @@ export class Sudoku {
   rows: Array<CellGroup>;
   cols: Array<CellGroup>;
   changes: Changes;
-  matrix: Array<Array<number>>;
+  matrix: Array<Array<number>> | void;
   allPossibleValues: Array<number>;
 
   constructor(blockSize = 3, matrix: Matrix) {

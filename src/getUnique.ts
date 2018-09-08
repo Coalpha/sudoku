@@ -1,4 +1,5 @@
-import { Changes, Coordinate, PossibleValuesCollection, Sudoku } from './types';
+import { Changes, Coordinate, PossibleValues, Sudoku } from './types';
+import parseCellGroup from './parseCellGroup';
 
 interface option {
   coord: Coordinate,
@@ -34,31 +35,26 @@ const dedupeOptionsByCoord = options => {
   return options.filter(option => seen.get(option.coord) === 1);
 };
 
-const place = ({
-  size, blocks, rows, cols, matrix
-}) => ({ coords: [x, y], num }) => {
-  const bx = Math.floor(x / size);
-  const by = Math.floor(y / size);
+const place = (s: Sudoku) => (option: option) => {
+  const [x, y] = option.coord;
+  const bx = Math.floor(x / s.blockSize);
+  const by = Math.floor(y / s.blockSize);
   const blockNum = parseInt(`${by}${bx}`, 2);
-  const cblock = blocks[blockNum];
-  const ccol = cols[x];
-  const crow = rows[y];
-  cblock.add(num);
-  ccol.add(num);
-  crow.add(num);
-  matrix[y][x] = num;
+  const cblock = s.blocks[blockNum];
+  const ccol = s.cols[x];
+  const crow = s.rows[y];
+  cblock.values.add(option.num);
+  ccol.values.add(option.num);
+  crow.values.add(option.num);
+  s.matrix[y][x] = option.num;
   return [`block:${blockNum}`, `col:${x}`, `row:${y}`];
 };
 
-const getUnique = sudoku => ({ group: { coords }, vals }) => {
-  const options = vals.reduce((arr, vals, i) => arr.concat(vals.map(val => option(coords[i], val))), []);
+const getUnique = (s: Sudoku, pvals: PossibleValues) : Changes => {
+  const group = parseCellGroup(s, pvals.group);
+  const options = pvals.values.reduce((arr, vals, i) => arr.concat(vals.map(val => makeOption(group.coords[i], val))), []);
   const placements = dedupeOptionsByNum(options).concat(dedupeOptionsByCoord(options));
-  return placements.map(place(sudoku)).reduce((arr, v) => arr.concat(v), []);
-};
-
-export const parseCellGroup = (sudoku, cellGroup) => {
-  const items = cellGroup.split(':');
-  return sudoku[items[0]][items[1]];
+  return placements.map(place(s)).reduce((arr, v) => arr.concat(v), []);
 };
 
 export default getUnique;
