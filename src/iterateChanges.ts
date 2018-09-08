@@ -5,7 +5,7 @@ import map from './map';
 import pipe from './pipe';
 import { Sudoku } from './types';
 export default ((s: Sudoku) : void => {
-  s.changes = s.changes.map(change => getUnique(s, iterateCoords(s, change)));
+  s.changes = s.changes.map(change => getUnique(s, iterateCoords(s, change))).reduce((arr, v) => arr.concat(v), []);
   if (s.changes.length < 1) {
     // either we're done or something did a bad
     if (areWeDoneYet(s)) {
