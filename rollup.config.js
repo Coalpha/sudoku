@@ -8,11 +8,11 @@ import typescript from 'rollup-plugin-typescript';
 function makeOutput(format, outfile, plugins) {
   return ({
     input: 'src/main.js',
-    moduleName: 'Sudoku', // yep, that's painful
+    moduleName: 'Sudoku',
     output: {
       format,
       file: outfile,
-      name: 'window',
+      name: 'Sudoku',
       strict: true,
     },
     plugins: [typescript(), babel(), ...plugins],

@@ -1,2 +1,2 @@
-export const a = 1;
-export const b = 3;
+export { default as iterateChanges } from './iterateChanges';
+export { Sudoku } from './types';

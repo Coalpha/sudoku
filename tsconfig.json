@@ -2,6 +2,7 @@
   "compilerOptions": {
     "noEmit": true,
     "pretty": true,
+    "downlevelIteration": true,
     "moduleResolution": "Node",
     "lib": [
       "es5",
