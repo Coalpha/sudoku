@@ -9,7 +9,9 @@ export default ((s: Sudoku, group: string) : PossibleValues => {
     const currentRow = s.rows[coord[1]];
     const currentCol = s.cols[coord[0]];
     const currentSet = new Set([...currentBlock.values, ...currentRow.values, ...currentCol.values]);
-    return s.allPossibleValues.filter((value) => !currentSet.has(value));
+    const r = s.allPossibleValues.filter((value) => !currentSet.has(value));
+    console.log(r);
+    return r;
     // There's no need to re-dedupe this since it was already deduped before
   });
   return ({

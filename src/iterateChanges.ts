@@ -5,7 +5,11 @@ import map from './map';
 import pipe from './pipe';
 import { Sudoku } from './types';
 export default ((s: Sudoku) : void => {
-  s.changes = s.changes.map(change => getUnique(s, iterateCoords(s, change))).reduce((arr, v) => arr.concat(v), []);
+  s.changes = [
+    ...new Set(
+      s.changes.map(change => getUnique(s, iterateCoords(s, change))).reduce((arr, v) => arr.concat(v), [])
+    )
+  ];
   if (s.changes.length < 1) {
     // either we're done or something did a bad
     if (areWeDoneYet(s)) {
@@ -14,4 +18,5 @@ export default ((s: Sudoku) : void => {
       throw Error('this sudoku is warm and bad');
     }
   }
+  console.log(s.changes);
 });

@@ -22,7 +22,7 @@ export class CellGroup {
     return ({
       identifier,
       coords,
-      values: new Set(Array(coords.length).fill(0).map((v, i) => i)),
+      values: new Set(Array(coords.length).fill(0).map((v, i) => i + 1)),
     });
   }
 }
@@ -52,7 +52,12 @@ export class Sudoku {
     this.blocks = aryMaxVal.map((v, blockIdx) => {
       const id = makeCellGroupId('block', blockIdx);
       this.changes.push(id);
-      const block = Array(this.maxValue).fill(0).map((_, cellIdx) => [cellIdx % blockSize, 0 | cellIdx / blockSize]);
+      const xOffset = (blockIdx % blockSize) * blockSize;
+      const yOffset = (0 | blockIdx / blockSize) * blockSize;
+      const block = Array(this.maxValue).fill(0).map((_, cellIdx) => [
+        (cellIdx % blockSize) + xOffset,
+        (0 | cellIdx / blockSize) + yOffset,
+      ]);
       return new CellGroup(id, block);
     });
     this.rows = aryMaxVal.map((v, y) => {
@@ -68,6 +73,15 @@ export class Sudoku {
       return new CellGroup(id, col);
     });
     this.matrix = matrix;
-    this.allPossibleValues = aryMaxVal.map((v, i) => i);
+    this.allPossibleValues = aryMaxVal.map((v, i) => i + 1);
+    this.blocks.forEach(block => block.coords.forEach(coord => {
+      block.values.delete(matrix[coord[1]][coord[0]]);
+    }));
+    this.rows.forEach(row => row.coords.forEach(coord => {
+      row.values.delete(matrix[coord[1]][coord[0]]);
+    }));
+    this.cols.forEach(col => col.coords.forEach(coord => {
+      col.values.delete(matrix[coord[1]][coord[0]]);
+    }));
   }
 }
