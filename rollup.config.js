@@ -1,10 +1,19 @@
-import babel from 'rollup-plugin-babel';
 import livereload from 'rollup-plugin-livereload';
-// import resolve from 'rollup-plugin-node-resolve';
+import resolve from 'rollup-plugin-node-resolve';
 import serve from 'rollup-plugin-serve';
 import { terser } from 'rollup-plugin-terser';
-import typescript from 'rollup-plugin-typescript';
+import typescript from 'rollup-plugin-typescript2';
 
+const defaults = {
+  compilerOptions: {
+    declaration: true,
+  },
+};
+const override = {
+  compilerOptions: {
+    declaration: false,
+  },
+};
 function makeOutput(format, outfile, plugins) {
   return ({
     input: 'src/main.ts',
@@ -15,7 +24,11 @@ function makeOutput(format, outfile, plugins) {
       name: 'Sudoku',
       strict: true,
     },
-    plugins: [typescript(), babel(), ...plugins],
+    plugins: [resolve(), typescript({
+      tsconfigDefaults: defaults,
+      tsconfig: 'tsconfig.json',
+      tsconfigOverride: override,
+    }), ...plugins],
   });
 }
 const production = !process.env.ROLLUP_WATCH;

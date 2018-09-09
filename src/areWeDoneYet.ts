@@ -1,3 +1,3 @@
-import { Changes, PossibleValuesCollection, Sudoku } from './types';
+import { Changes, Sudoku } from './types';
 
-export default ((s: Sudoku) : boolean => s.matrix.every(row => row.every(Number.isInteger)));
+export default ((s: Sudoku) : boolean => s.matrix.every(row => row.every(val => Number.isInteger(val) && val > 0)));

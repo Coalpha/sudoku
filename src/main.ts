@@ -1,3 +1,4 @@
 export { default as iterateChanges } from './iterateChanges';
+import s0 from './s0';
 import { Sudoku, MatrixFactory } from './types';
-window.x = new Sudoku(MatrixFactory(9));
+export const x = new Sudoku(s0);
