@@ -47,6 +47,10 @@ const place = (s: Sudoku) => (option: Option) : Changes => {
   currentCol.values.add(option.num);
   currentRow.values.add(option.num);
   s.matrix[y][x] = option.num;
+  console.groupCollapsed(`getUnique/placed`);
+  console.log(`placed ${option.num} at (${x}, ${y})`);
+  console.warn(`changed block:${blockNum}, col:${x}, and row:${y}`);
+  console.groupEnd();
   return [`block:${blockNum}`, `col:${x}`, `row:${y}`];
 };
 

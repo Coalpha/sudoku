@@ -19,11 +19,9 @@ export class CellGroup {
   values: Set<number>;
   coords: Array<Coordinate>
   constructor(identifier: string, coords: Array<Coordinate>) {
-    return ({
-      identifier,
-      coords,
-      values: new Set(Array(coords.length).fill(0).map((v, i) => i + 1)),
-    });
+    this.identifier = identifier;
+    this.coords = coords;
+    this.values = new Set();
   }
 }
 export class Sudoku {
@@ -75,13 +73,22 @@ export class Sudoku {
     this.matrix = matrix;
     this.allPossibleValues = aryMaxVal.map((v, i) => i + 1);
     this.blocks.forEach(block => block.coords.forEach(coord => {
-      block.values.delete(matrix[coord[1]][coord[0]]);
+      const val = matrix[coord[1]][coord[0]];
+      if (val > 0) {
+        block.values.add(val);
+      }
     }));
     this.rows.forEach(row => row.coords.forEach(coord => {
-      row.values.delete(matrix[coord[1]][coord[0]]);
+      const val = matrix[coord[1]][coord[0]];
+      if (val > 0) {
+        row.values.add(val);
+      }
     }));
     this.cols.forEach(col => col.coords.forEach(coord => {
-      col.values.delete(matrix[coord[1]][coord[0]]);
+      const val = matrix[coord[1]][coord[0]];
+      if (val > 0) {
+        col.values.add(val);
+      }
     }));
   }
 }
